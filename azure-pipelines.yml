@@ -1,3 +1,4 @@
+
 resources:
   repositories:
   - repository: MVNBuildforPipeline 
@@ -5,7 +6,7 @@ resources:
     name: slahirucd7/MVNBuildforPipeline
     source: slahirucd7/MVNBuildforPipeline  
     endpoint: gitService
-    ref: 'master'
+    ref: 'testBranch'
     pr:
       branches:
         include: 
