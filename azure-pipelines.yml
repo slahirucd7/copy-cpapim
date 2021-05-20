@@ -1,0 +1,38 @@
+resources:
+  repositories:
+  - repository: MVNBuildforPipeline 
+    type: github
+    name: slahirucd7/MVNBuildforPipeline
+    source: slahirucd7/MVNBuildforPipeline  
+    endpoint: GitConnection
+    ref: 'master'
+    trigger:
+      branches:
+       include:
+         - master
+         - testBranch
+         - b3
+    # pr:
+    #   branches:
+    #     include: 
+    #     - testBranch
+
+
+variables:
+  tag: '$(Build.BuildId)'
+
+stages:
+- stage: Build
+  displayName: Build image
+  jobs:
+  - job: Build
+    displayName: Build
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+    - bash: |
+        which bash
+        ls ~/
+        echo Hello $name
+      displayName: Executing bash script
+      
