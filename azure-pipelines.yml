@@ -1,3 +1,5 @@
+trigger: none
+
 resources:
   repositories:
   - repository: MVNBuildforPipeline 
@@ -6,16 +8,10 @@ resources:
     source: slahirucd7/MVNBuildforPipeline  
     endpoint: gitService
     ref: 'master'
-    trigger:
+    pr:
       branches:
-       include:
-         - master
-         - testBranch
-         - b3
-    # pr:
-    #   branches:
-    #     include: 
-    #     - testBranch
+        include: 
+        - testBranch
 
 
 variables:
