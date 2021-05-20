@@ -1,3 +1,5 @@
+trigger: none
+
 resources:
   repositories:
   - repository: MVNBuildforPipeline 
@@ -9,7 +11,7 @@ resources:
     trigger:
       branches:
        include:
-         - b3
+         - testBranch2
     pr:
       branches:
         include: 
