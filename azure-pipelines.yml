@@ -24,15 +24,24 @@ stages:
     pool:
       vmImage: ubuntu-latest
     steps:
-    - task: DownloadBuildArtifacts@0
-      displayName: 'Downloading variables'
+    # - task: DownloadBuildArtifacts@0
+    #   displayName: 'Downloading variables'
+    #   inputs:
+    #     buildType: 'specific'
+    #     project: 'FromPocToScenarioTesting'
+    #     pipeline: 'slahirucd7.carbon-apimgt'
+    #     buildVersionToDownload: 'latest'
+    #     downloadType: 'specific'
+    #     downloadPath: '$(System.ArtifactsDirectory)'
+    
+    - task: DownloadPipelineArtifact@2
       inputs:
         buildType: 'specific'
         project: 'FromPocToScenarioTesting'
         pipeline: 'slahirucd7.carbon-apimgt'
         buildVersionToDownload: 'latest'
-        downloadType: 'specific'
-        downloadPath: '$(System.ArtifactsDirectory)'
+        artifactName: 'variables'
+        targetPath: '$(System.ArtifactsDirectory)'
 
     - script: cat $(System.ArtifactsDirectory)/variables/pipeline.env
       displayName: 'Restore Enviornment Variables'
