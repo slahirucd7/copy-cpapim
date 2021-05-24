@@ -3,10 +3,10 @@ trigger: none
 # Defines carbon-apimgt branch
 resources:
   repositories:
-  - repository: MVNBuildforPipeline 
+  - repository: carbon-apimgt 
     type: github
-    name: slahirucd7/MVNBuildforPipeline
-    source: slahirucd7/MVNBuildforPipeline  
+    name: slahirucd7/carbon-apimgt
+    source: slahirucd7/carbon-apimgt  
     endpoint: slahirucd7
 
 # Defines Pipeline file stored in carbon-apimgt master branch
@@ -48,29 +48,19 @@ stages:
         echo "PRNumber:$(PRNumber)"
       displayName: 'echo PR number using env variables'
 
-    - checkout: MVNBuildforPipeline
+    - checkout: carbon-apimgt
     
     - script: |
 
         git branch
-        
-        ls $(Build.SourcesDirectory)
-        dir $(Build.SourcesDirectory)
-        echo "Build.ArtifactStagingDirectory:" 
+        git fetch origin pull/$(PRNumber)/head:prBranch
+        git checkout prBranch
 
-        echo "$(Build.ArtifactStagingDirectory)"
+        mvn clean install -DskipTests=true
 
-        echo "Build.BinariesDirectory:" 
+        echo "/home/vsts/work/1/a"
+        ls /home/vsts/work/1/a
 
-        echo "$(Build.BinariesDirectory)"
-
-        echo "Build.SourcesDirectory:"
-
-        echo "$(Build.SourcesDirectory)"
-
-        echo "/home/vsts/work/1/s"
-
-        ls /home/vsts/work/1/s
 
     
 
