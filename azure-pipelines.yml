@@ -56,8 +56,18 @@ stages:
         git fetch origin pull/$(PRNumber)/head:prBranch
         git checkout prBranch
 
-        mvn clean install -DskipTests=true
+    - task: Maven@3
+      inputs:
+        mavenPomFile: 'pom.xml'
+        goals: 'clean install'
+        options: '-Dmaven.test.skip=true'
+        mavenOptions: '-Xmx3072m $(MAVEN_OPTS)'
+        javaHomeOption: 'JDKVersion'
+        jdkVersionOption: '1.8'
+        jdkArchitectureOption: 'x64'
+        
 
+    - script: |
         echo "/home/vsts/work/1/a"
         ls /home/vsts/work/1/a
 
