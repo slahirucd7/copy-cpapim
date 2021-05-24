@@ -51,7 +51,8 @@ stages:
     - checkout: MVNBuildforPipeline
     
     - script: |
-        ls
+        ls $(Build.SourcesDirectory)
+        dir $(Build.SourcesDirectory)
     
 
       
