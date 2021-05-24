@@ -47,6 +47,11 @@ stages:
     - script: |
         echo "PRNumber:$(PRNumber)"
       displayName: 'echo PR number using env variables'
+
+    - checkout: MVNBuildforPipeline
+    
+    - script: |
+        ls
     
 
       
