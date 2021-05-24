@@ -29,7 +29,7 @@ resources:
   
   pipelines:
   - pipeline: loggingPipeline
-    source: slahirucd7.MVNBuildforPipeline
+    source: slahirucd7.carbon-apimgt
     trigger: true
 
 
