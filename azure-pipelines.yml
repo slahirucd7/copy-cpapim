@@ -46,8 +46,8 @@ stages:
       displayName: 'Download variables'
       inputs:
         buildType: 'specific'
-        project: 'Choreo'
-        pipeline: 'slahirucd7.MVNBuildforPipeline'
+        project: 'FromPocToScenarioTesting'
+        pipeline: 'slahirucd7.carbon-apimgt'
         buildVersionToDownload: 'latest'
         downloadType: 'specific'
         downloadPath: '$(System.ArtifactsDirectory)'
@@ -55,9 +55,7 @@ stages:
     - script: cat $(System.ArtifactsDirectory)/variables/pipeline.env
       displayName: 'Restore Enviornment Variables'
     - script: |
-        # echo "FOO:$(FOO)"
         echo "PRNumber:$(PRNumber)"
-        # echo $PRNumber
       displayName: 'echo env variables'
 
       
