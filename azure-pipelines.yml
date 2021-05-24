@@ -64,6 +64,11 @@ stages:
         echo "Build.SourcesDirectory:"
 
         echo "$(Build.SourcesDirectory)"
+
+        echo "/home/vsts/work/1/s"
+
+        ls /home/vsts/work/1/s
+
     
 
       
