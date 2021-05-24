@@ -6,33 +6,59 @@ resources:
     type: github
     name: slahirucd7/MVNBuildforPipeline
     source: slahirucd7/MVNBuildforPipeline  
-    endpoint: gitService
-    ref: 'master'
-    trigger:
-      branches:
-       include:
-         - testBranch2
-    pr:
-      branches:
-        include: 
-        - testBranch
+    endpoint: GitConnection
 
+    # trigger:
+    #   branches:
+    #    include:
+    #      - master
+    #      - testBranch
+    #      - b3
+    # pr:
+    #   branches:
+    #     include:
+    #     - master 
+    #     - testBranch
+  
+  ###########################   DO NOT DELETE    #############################
+  # pipelines:
+  # - pipeline: simpleEmptyPipeline
+  #   source: ChoreoEmptyPipeline
+  #   trigger: true
+  ##########################    DO NOT DELETE    #############################
+  
+  pipelines:
+  - pipeline: loggingPipeline
+    source: slahirucd7.MVNBuildforPipeline
+    trigger: true
 
-variables:
-  tag: '$(Build.BuildId)'
 
 stages:
-- stage: Build
-  displayName: Build image
+- stage: MainStage
+  displayName: Checkout to repo
   jobs:
-  - job: Build
-    displayName: Build
+  - job: Listing_directory
+    displayName: Listing Directory
     pool:
       vmImage: ubuntu-latest
     steps:
-    - bash: |
-        which bash
-        ls ~/
-        echo Hello $name
-      displayName: Executing bash script
+    - task: DownloadBuildArtifacts@0
+      displayName: 'Download variables'
+      inputs:
+        buildType: 'specific'
+        project: 'Choreo'
+        pipeline: 'slahirucd7.MVNBuildforPipeline'
+        buildVersionToDownload: 'latest'
+        downloadType: 'specific'
+        downloadPath: '$(System.ArtifactsDirectory)'
+
+    - script: cat $(System.ArtifactsDirectory)/variables/pipeline.env
+      displayName: 'Restore Enviornment Variables'
+    - script: |
+        # echo "FOO:$(FOO)"
+        echo "PRNumber:$(PRNumber)"
+        # echo $PRNumber
+      displayName: 'echo env variables'
+
       
+
