@@ -51,6 +51,9 @@ stages:
     - checkout: MVNBuildforPipeline
     
     - script: |
+
+        git branch
+        
         ls $(Build.SourcesDirectory)
         dir $(Build.SourcesDirectory)
         echo "Build.ArtifactStagingDirectory:" 
