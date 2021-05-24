@@ -6,7 +6,7 @@ resources:
     type: github
     name: slahirucd7/MVNBuildforPipeline
     source: slahirucd7/MVNBuildforPipeline  
-    endpoint: GitConnection
+    endpoint: slahirucd7
 
     # trigger:
     #   branches:
