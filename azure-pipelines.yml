@@ -40,9 +40,8 @@ stages:
         project: 'FromPocToScenarioTesting'
         pipeline: 'slahirucd7.carbon-apimgt'
         buildVersionToDownload: 'latest'
-        artifactName: 'variables'
         targetPath: '$(System.ArtifactsDirectory)'
-
+        
     - script: cat $(System.ArtifactsDirectory)/variables/pipeline.env
       displayName: 'Restore Enviornment Variables'
     - script: |
