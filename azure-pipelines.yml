@@ -53,7 +53,17 @@ stages:
     - script: |
         ls $(Build.SourcesDirectory)
         dir $(Build.SourcesDirectory)
-        pwd
+        echo "Build.ArtifactStagingDirectory:" 
+
+        echo "$(Build.ArtifactStagingDirectory)"
+
+        echo "Build.BinariesDirectory:" 
+
+        echo "$(Build.BinariesDirectory)"
+
+        echo "Build.SourcesDirectory:"
+
+        echo "$(Build.SourcesDirectory)"
     
 
       
