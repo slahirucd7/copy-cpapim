@@ -1,6 +1,6 @@
 trigger: none
 
-# Defines carbon-apimgt branch
+# Defines carbon-apimgt repositiry as a resource
 resources:
   repositories:
   - repository: carbon-apimgt 
@@ -9,7 +9,7 @@ resources:
     source: slahirucd7/carbon-apimgt  
     endpoint: slahirucd7
 
-# Defines Pipeline file stored in carbon-apimgt master branch
+# Defines Pipeline triggers in carbon-apimgt master branch
   pipelines:
   - pipeline: loggingPipeline
     source: slahirucd7.carbon-apimgt
@@ -68,8 +68,8 @@ stages:
         
 
     - script: |
-        echo "/home/vsts/work/1/a"
-        ls /home/vsts/work/1/a
+        CarbonAPIMGTSnapshotVersion=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+        echo "CarbonAPIMGT Snapshot Version:$(CarbonAPIMGTSnapshotVersion)"
 
 
     
