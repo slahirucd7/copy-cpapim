@@ -46,7 +46,7 @@ stages:
       displayName: 'Restore Enviornment Variables'
     - script: |
         echo "PRNumber:$(PRNumber)"
-      displayName: 'Grtting PR number using env variables'
+      displayName: 'Getting PR number using env variables'
 
     - checkout: carbon-apimgt
     
