@@ -1,3 +1,7 @@
+variables:
+- name: carbonAPIMGTSnapshotVersion
+  value: notAssigned
+
 trigger: none
 
 # Defines carbon-apimgt repositiry as a resource
@@ -10,10 +14,10 @@ resources:
     endpoint: slahirucd7
 
 # Defines Pipeline triggers in carbon-apimgt master branch
-  # pipelines:
-  # - pipeline: loggingPipeline
-  #   source: slahirucd7.carbon-apimgt
-  #   trigger: true
+  pipelines:
+  - pipeline: loggingPipeline
+    source: slahirucd7.carbon-apimgt
+    trigger: true
 
 stages:
 - stage: MainStage
@@ -51,10 +55,10 @@ stages:
     - checkout: carbon-apimgt
     
     - script: |
-
         git branch
         git fetch origin pull/$(PRNumber)/head:prBranch
         git checkout prBranch
+      displayName: 'Fetching changes relevant to the PR'
 
     - task: Maven@3
       inputs:
@@ -66,10 +70,16 @@ stages:
         jdkVersionOption: '1.8'
         jdkArchitectureOption: 'x64'
         
-
     - script: |
-        CarbonAPIMGTSnapshotVersion=mvn help:evaluate -Dexpression=project.version -q -DforceStdout
-        echo "CarbonAPIMGT Snapshot Version:$(CarbonAPIMGTSnapshotVersion)"
+        echo '##vso[task.setvariable variable=carbonAPIMGTSnapshotVersion]$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)'
+        snapshotVersion=mvn help:evaluate -Dexpression=project.version -q -DforceStdout
+        mvn help:evaluate -Dexpression=project.version -q -DforceStdout
+      displayName: 'Obtaining Carbon-APIMGT snapshot version'
+    
+    - script: |
+        echo $(carbonAPIMGTSnapshotVersion)
+        echo "carbonAPIMGTSnapshotVersion: $(carbonAPIMGTSnapshotVersion)"
+      displayName: 'Continues to build Chreo-Product-APIM'
 
 
     
