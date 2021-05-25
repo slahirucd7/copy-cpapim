@@ -5,7 +5,7 @@ resources:
   repositories:
   - repository: carbon-apimgt 
     type: github
-    name: slahirucd7/MVNBuildforPipeline-apimgt
+    name: slahirucd7/MVNBuildforPipeline
     source: slahirucd7/MVNBuildforPipeline
     endpoint: slahirucd7
 
