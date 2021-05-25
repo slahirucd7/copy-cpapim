@@ -5,8 +5,8 @@ resources:
   repositories:
   - repository: carbon-apimgt 
     type: github
-    name: slahirucd7/carbon-apimgt
-    source: slahirucd7/carbon-apimgt  
+    name: slahirucd7/MVNBuildforPipeline-apimgt
+    source: slahirucd7/MVNBuildforPipeline
     endpoint: slahirucd7
 
 # Defines Pipeline triggers in carbon-apimgt master branch
@@ -68,7 +68,7 @@ stages:
         
 
     - script: |
-        CarbonAPIMGTSnapshotVersion=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+        CarbonAPIMGTSnapshotVersion=mvn help:evaluate -Dexpression=project.version -q -DforceStdout
         echo "CarbonAPIMGT Snapshot Version:$(CarbonAPIMGTSnapshotVersion)"
 
 
