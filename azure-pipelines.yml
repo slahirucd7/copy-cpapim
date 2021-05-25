@@ -5,15 +5,15 @@ resources:
   repositories:
   - repository: carbon-apimgt 
     type: github
-    name: slahirucd7/MVNBuildforPipeline
-    source: slahirucd7/MVNBuildforPipeline
+    name: slahirucd7/carbon-apimgt
+    source: slahirucd7/carbon-apimgt
     endpoint: slahirucd7
 
 # Defines Pipeline triggers in carbon-apimgt master branch
-  pipelines:
-  - pipeline: loggingPipeline
-    source: slahirucd7.carbon-apimgt
-    trigger: true
+  # pipelines:
+  # - pipeline: loggingPipeline
+  #   source: slahirucd7.carbon-apimgt
+  #   trigger: true
 
 stages:
 - stage: MainStage
