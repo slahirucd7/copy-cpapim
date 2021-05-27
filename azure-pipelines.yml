@@ -28,62 +28,58 @@ stages:
     pool:
       vmImage: ubuntu-latest
     steps:
-    # # - task: DownloadBuildArtifacts@0
-    # #   displayName: 'Downloading variables'
-    # #   inputs:
-    # #     buildType: 'specific'
-    # #     project: 'FromPocToScenarioTesting'
-    # #     pipeline: 'slahirucd7.carbon-apimgt'
-    # #     buildVersionToDownload: 'latest'
-    # #     downloadType: 'specific'
-    # #     downloadPath: '$(System.ArtifactsDirectory)'
-    
-    # - task: DownloadPipelineArtifact@2
+    # - task: DownloadBuildArtifacts@0
+    #   displayName: 'Downloading variables'
     #   inputs:
     #     buildType: 'specific'
     #     project: 'FromPocToScenarioTesting'
     #     pipeline: 'slahirucd7.carbon-apimgt'
     #     buildVersionToDownload: 'latest'
-    #     targetPath: '$(System.ArtifactsDirectory)'
-        
-    # - script: cat $(System.ArtifactsDirectory)/variables/pipeline.env
-    #   displayName: 'Restore Enviornment Variables'
-    # - script: |
-    #     echo "PRNumber:$(PRNumber)"
-    #   displayName: 'Getting PR number using env variables'
-
-    # - checkout: carbon-apimgt
+    #     downloadType: 'specific'
+    #     downloadPath: '$(System.ArtifactsDirectory)'
     
-    # - script: |
-    #     git branch
-    #     git fetch origin pull/$(PRNumber)/head:prBranch
-    #     git checkout prBranch
-    #   displayName: 'Fetching changes relevant to the PR'
-
-    # - task: Maven@3
-    #   inputs:
-    #     mavenPomFile: 'pom.xml'
-    #     goals: 'clean install'
-    #     options: '-Dmaven.test.skip=true'
-    #     mavenOptions: '-Xmx3072m'
-    #     javaHomeOption: 'JDKVersion'
-    #     jdkVersionOption: '1.8'
-    #     jdkArchitectureOption: 'x64'
+    - task: DownloadPipelineArtifact@2
+      inputs:
+        buildType: 'specific'
+        project: 'FromPocToScenarioTesting'
+        pipeline: 'slahirucd7.carbon-apimgt'
+        buildVersionToDownload: 'latest'
+        targetPath: '$(System.ArtifactsDirectory)'
         
-    # - script: |
-    #     echo '##vso[task.setvariable variable=carbonAPIMGTSnapshotVersion]$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)'
-    #     snapshotVersion=mvn help:evaluate -Dexpression=project.version -q -DforceStdout
-    #     mvn help:evaluate -Dexpression=project.version -q -DforceStdout
-    #   displayName: 'Obtaining Carbon-APIMGT snapshot version'
-    
-    # - script: |
-    #     echo $(carbonAPIMGTSnapshotVersion)
-    #     echo "carbonAPIMGTSnapshotVersion: $(carbonAPIMGTSnapshotVersion)"
-    #   displayName: 'Continues to build Chreo-Product-APIM'
+    - script: cat $(System.ArtifactsDirectory)/variables/pipeline.env
+      displayName: 'Restore Enviornment Variables'
+    - script: |
+        echo "PRNumber:$(PRNumber)"
+      displayName: 'Getting PR number using env variables'
+
+    - checkout: carbon-apimgt
     
     - script: |
-          echo "BUILD_SOURCEVERSION do not support anymore to get commit id."
-          echo "BUILD_SOURCEVERSION = $SYSTEM_PULLREQUEST_SOURCECOMMITID"
+        git branch
+        git fetch origin pull/$(PRNumber)/head:prBranch
+        git checkout prBranch
+      displayName: 'Fetching changes relevant to the PR'
+
+    - task: Maven@3
+      inputs:
+        mavenPomFile: 'pom.xml'
+        goals: 'clean install'
+        options: '-Dmaven.test.skip=true'
+        mavenOptions: '-Xmx3072m'
+        javaHomeOption: 'JDKVersion'
+        jdkVersionOption: '1.8'
+        jdkArchitectureOption: 'x64'
+        
+    - script: |
+        echo '##vso[task.setvariable variable=carbonAPIMGTSnapshotVersion]$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)'
+        snapshotVersion=mvn help:evaluate -Dexpression=project.version -q -DforceStdout
+        mvn help:evaluate -Dexpression=project.version -q -DforceStdout
+      displayName: 'Obtaining Carbon-APIMGT snapshot version'
+    
+    - script: |
+        echo $(carbonAPIMGTSnapshotVersion)
+        echo "carbonAPIMGTSnapshotVersion: $(carbonAPIMGTSnapshotVersion)"
+      displayName: 'Continues to build Chreo-Product-APIM'
 
 
     
