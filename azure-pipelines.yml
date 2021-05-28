@@ -4,7 +4,7 @@ trigger: none
 resources:
   webhooks:
   - webhook: github_hook          ### Webhook alias
-    connection: GithubHook    ### Incoming webhook service connection
+    connection: GithubHook        ### Incoming webhook service connection
     filters:
       - path: pull_request.base.ref  
         value: 10.x
@@ -37,6 +37,9 @@ stages:
         script: |
           echo $(parameters.github_hook.number)
           echo "Pull Request ID : $(parameters.github_hook.number)"
+          echo $(PARAMETERS_GITHUB_HOOK_NUMBER)
+          echo "Pull Request ID : $(PARAMETERS_GITHUB_HOOK_NUMBER)"
+          echo {{parameters.github_hook.number}}
       displayName: Getting PR ID
 
 
