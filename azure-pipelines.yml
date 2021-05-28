@@ -39,14 +39,27 @@ stages:
           echo '##vso[task.setvariable variable=PRNumber]${{parameters.github_hook.number}}'
       displayName: Getting PR ID
     
+    - checkout: carbon-apimgt
+
     - task: Bash@3
       inputs:
         targetType: 'inline'
         script: |
           echo "$(PRNumber)"
-          echo '##vso[task.setvariab
+          git fetch origin pull/$(PRNumber)/head:prBranch
+          git checkout prBranch
+          git diff master prBranch
+      displayName: 'Fetching changes relevant to the PR'
 
-
+    #     - task: Maven@3
+#       inputs:
+#         mavenPomFile: 'pom.xml'
+#         goals: 'clean install'
+#         options: '-Dmaven.test.skip=true'
+#         mavenOptions: '-Xmx3072m'
+#         javaHomeOption: 'JDKVersion'
+#         jdkVersionOption: '1.8'
+#         jdkArchitectureOption: 'x64'
 
 
 
