@@ -1,23 +1,19 @@
-variables:
-- name: carbonAPIMGTSnapshotVersion
-  value: notAssigned
-
 trigger: none
 
 # Defines carbon-apimgt repositiry as a resource
 resources:
+  webhooks:
+  - webhook: github_hook          ### Webhook alias
+    connection: GithubHook    ### Incoming webhook service connection
+    filters:
+      - path: pull_request.base.ref  
+        value: 10.x
   repositories:
   - repository: carbon-apimgt 
     type: github
     name: slahirucd7/carbon-apimgt
     source: slahirucd7/carbon-apimgt
     endpoint: slahirucd7
-
-# Defines Pipeline triggers in carbon-apimgt master branch
-  pipelines:
-  - pipeline: loggingPipeline
-    source: slahirucd7.carbon-apimgt
-    trigger: true
 
 stages:
 - stage: MainStage
@@ -28,58 +24,138 @@ stages:
     pool:
       vmImage: ubuntu-latest
     steps:
-    # - task: DownloadBuildArtifacts@0
-    #   displayName: 'Downloading variables'
-    #   inputs:
-    #     buildType: 'specific'
-    #     project: 'FromPocToScenarioTesting'
-    #     pipeline: 'slahirucd7.carbon-apimgt'
-    #     buildVersionToDownload: 'latest'
-    #     downloadType: 'specific'
-    #     downloadPath: '$(System.ArtifactsDirectory)'
-    
-    - task: DownloadPipelineArtifact@2
+    - task: PowerShell@2
       inputs:
-        buildType: 'specific'
-        project: 'FromPocToScenarioTesting'
-        pipeline: 'slahirucd7.carbon-apimgt'
-        buildVersionToDownload: 'latest'
-        targetPath: '$(System.ArtifactsDirectory)'
-        
-    - script: cat $(System.ArtifactsDirectory)/variables/pipeline.env
-      displayName: 'Restore Enviornment Variables'
-    - script: |
-        echo "PRNumber:$(PRNumber)"
-      displayName: 'Getting PR number using env variables'
+        targetType: 'inline'
+        ### JSON payload data is available in the form of ${{ parameters.<WebhookAlias>.<JSONPath>}}
+        script: |
+          Write-Host ${{ parameters.github_hook.action}}
+          Write-Host ${{ parameters.github_hook.number}}
 
-    - checkout: carbon-apimgt
-    
-    - script: |
-        git branch
-        git fetch origin pull/$(PRNumber)/head:prBranch
-        git checkout prBranch
-      displayName: 'Fetching changes relevant to the PR'
 
-    - task: Maven@3
-      inputs:
-        mavenPomFile: 'pom.xml'
-        goals: 'clean install'
-        options: '-Dmaven.test.skip=true'
-        mavenOptions: '-Xmx3072m'
-        javaHomeOption: 'JDKVersion'
-        jdkVersionOption: '1.8'
-        jdkArchitectureOption: 'x64'
-        
-    - script: |
-        echo '##vso[task.setvariable variable=carbonAPIMGTSnapshotVersion]$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)'
-        snapshotVersion=mvn help:evaluate -Dexpression=project.version -q -DforceStdout
-        mvn help:evaluate -Dexpression=project.version -q -DforceStdout
-      displayName: 'Obtaining Carbon-APIMGT snapshot version'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# variables:
+# - name: carbonAPIMGTSnapshotVersion
+#   value: notAssigned
+
+# trigger: none
+
+# # Defines carbon-apimgt repositiry as a resource
+# resources:
+#   repositories:
+#   - repository: carbon-apimgt 
+#     type: github
+#     name: slahirucd7/carbon-apimgt
+#     source: slahirucd7/carbon-apimgt
+#     endpoint: slahirucd7
+
+# # Defines Pipeline triggers in carbon-apimgt master branch
+#   pipelines:
+#   - pipeline: loggingPipeline
+#     source: slahirucd7.carbon-apimgt
+#     trigger: true
+
+# stages:
+# - stage: MainStage
+#   displayName: Checkout to carbon-apimgt repo
+#   jobs:
+#   - job: 'GettingPullRequestDetails'
+#     displayName: Getting PullRequest Details
+#     pool:
+#       vmImage: ubuntu-latest
+#     steps:
+#     # - task: DownloadBuildArtifacts@0
+#     #   displayName: 'Downloading variables'
+#     #   inputs:
+#     #     buildType: 'specific'
+#     #     project: 'FromPocToScenarioTesting'
+#     #     pipeline: 'slahirucd7.carbon-apimgt'
+#     #     buildVersionToDownload: 'latest'
+#     #     downloadType: 'specific'
+#     #     downloadPath: '$(System.ArtifactsDirectory)'
     
-    - script: |
-        echo $(carbonAPIMGTSnapshotVersion)
-        echo "carbonAPIMGTSnapshotVersion: $(carbonAPIMGTSnapshotVersion)"
-      displayName: 'Continues to build Chreo-Product-APIM'
+#     - task: DownloadPipelineArtifact@2
+#       inputs:
+#         buildType: 'specific'
+#         project: 'FromPocToScenarioTesting'
+#         pipeline: 'slahirucd7.carbon-apimgt'
+#         buildVersionToDownload: 'latest'
+#         targetPath: '$(System.ArtifactsDirectory)'
+        
+#     - script: cat $(System.ArtifactsDirectory)/variables/pipeline.env
+#       displayName: 'Restore Enviornment Variables'
+#     - script: |
+#         echo "PRNumber:$(PRNumber)"
+#       displayName: 'Getting PR number using env variables'
+
+#     - checkout: carbon-apimgt
+    
+#     - script: |
+#         git branch
+#         git fetch origin pull/$(PRNumber)/head:prBranch
+#         git checkout prBranch
+#       displayName: 'Fetching changes relevant to the PR'
+
+#     - task: Maven@3
+#       inputs:
+#         mavenPomFile: 'pom.xml'
+#         goals: 'clean install'
+#         options: '-Dmaven.test.skip=true'
+#         mavenOptions: '-Xmx3072m'
+#         javaHomeOption: 'JDKVersion'
+#         jdkVersionOption: '1.8'
+#         jdkArchitectureOption: 'x64'
+        
+#     - script: |
+#         echo '##vso[task.setvariable variable=carbonAPIMGTSnapshotVersion]$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)'
+#         snapshotVersion=mvn help:evaluate -Dexpression=project.version -q -DforceStdout
+#         mvn help:evaluate -Dexpression=project.version -q -DforceStdout
+#       displayName: 'Obtaining Carbon-APIMGT snapshot version'
+    
+#     - script: |
+#         echo $(carbonAPIMGTSnapshotVersion)
+#         echo "carbonAPIMGTSnapshotVersion: $(carbonAPIMGTSnapshotVersion)"
+#       displayName: 'Continues to build Chreo-Product-APIM'
 
 
     
