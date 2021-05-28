@@ -34,13 +34,12 @@ stages:
         git branch
         echo '##vso[task.setvariable variable=GIT_COMMIT_ID]$(git rev-parse --short HEAD)'
         echo '##vso[task.setvariable variable=PR_NUMBER]$(curl https://api.github.com/search/issues?q=sha:$GIT_COMMIT_ID | grep number | grep -o '[0-9]*')'
-        echo "PRNumber: $(PRNumber)"
-        git fetch origin pull/$(PRNumber)/head:prBranch
-        git checkout prBranch
-      displayName: 'Fetching changes relevant to the PR'
+      displayName: 'Getting PR Number'
     
     - script: |
         echo "PRNumber: $(PRNumber)"
+        git fetch origin pull/$(PRNumber)/head:prBranch
+        git checkout prBranch
       displayName: 'Fetching changes relevant to the PR'
 
     # - task: Maven@3
