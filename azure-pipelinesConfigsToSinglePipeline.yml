@@ -14,10 +14,10 @@ resources:
     endpoint: slahirucd7
 
 # Defines Pipeline triggers in carbon-apimgt master branch
-  pipelines:
-  - pipeline: TestForSinglePipeline-CI
-    source: slahirucd7.carbon-apimgt
-    trigger: true
+  # pipelines:
+  # - pipeline: TestForSinglePipeline-CI
+  #   source: slahirucd7.carbon-apimgt
+  #   trigger: true
 
 stages:
 - stage: MainStage
