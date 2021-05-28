@@ -45,21 +45,31 @@ stages:
       inputs:
         targetType: 'inline'
         script: |
-          echo "$(PRNumber)"
+          echo "Pull Request ID : $(PRNumber)"
           git fetch origin pull/$(PRNumber)/head:prBranch
           git checkout prBranch
-          git diff master prBranch
       displayName: 'Fetching changes relevant to the PR'
 
-    #     - task: Maven@3
-#       inputs:
-#         mavenPomFile: 'pom.xml'
-#         goals: 'clean install'
-#         options: '-Dmaven.test.skip=true'
-#         mavenOptions: '-Xmx3072m'
-#         javaHomeOption: 'JDKVersion'
-#         jdkVersionOption: '1.8'
-#         jdkArchitectureOption: 'x64'
+    - task: Maven@3
+      inputs:
+        mavenPomFile: 'pom.xml'
+        goals: 'clean install'
+        options: '-Dmaven.test.skip=true'
+        mavenOptions: '-Xmx3072m'
+        javaHomeOption: 'JDKVersion'
+        jdkVersionOption: '1.8'
+        jdkArchitectureOption: 'x64'
+
+    - script: |
+        echo '##vso[task.setvariable variable=carbonAPIMGTSnapshotVersion]$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)'
+        snapshotVersion=mvn help:evaluate -Dexpression=project.version -q -DforceStdout
+        mvn help:evaluate -Dexpression=project.version -q -DforceStdout
+      displayName: 'Obtaining Carbon-APIMGT snapshot version'
+    
+    - script: |
+        echo $(carbonAPIMGTSnapshotVersion)
+        echo "carbonAPIMGTSnapshotVersion: $(carbonAPIMGTSnapshotVersion)"
+      displayName: 'Continues to build Chreo-Product-APIM'
 
 
 
