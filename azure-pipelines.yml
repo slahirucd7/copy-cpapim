@@ -40,6 +40,8 @@ stages:
           echo $(PARAMETERS_GITHUB_HOOK_NUMBER)
           echo "Pull Request ID : $(PARAMETERS_GITHUB_HOOK_NUMBER)"
           echo {{parameters.github_hook.number}}
+          echo ${{parameters.github_hook.number}}
+          echo {{parameters.github_hook.number}}
       displayName: Getting PR ID
 
 
