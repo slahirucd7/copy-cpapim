@@ -1,0 +1,69 @@
+variables:
+- name: carbonAPIMGTSnapshotVersion
+  value: notAssigned
+
+trigger: none
+
+# Defines carbon-apimgt repositiry as a resource
+resources:
+  repositories:
+  - repository: carbon-apimgt 
+    type: github
+    name: slahirucd7/carbon-apimgt
+    source: slahirucd7/carbon-apimgt
+    endpoint: slahirucd7
+
+# Defines Pipeline triggers in carbon-apimgt master branch
+  pipelines:
+  - pipeline: TestForSinglePipeline-CI
+    source: slahirucd7.carbon-apimgt
+    trigger: true
+
+stages:
+- stage: MainStage
+  displayName: Checkout to carbon-apimgt repo
+  jobs:
+  - job: 'GettingPullRequestDetails'
+    displayName: Getting PullRequest Details
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+
+    - checkout: carbon-apimgt
+    
+    - script: |
+        git branch
+        GIT_COMMIT_ID=$(git rev-parse --short HEAD)
+        echo "GIT_COMMIT_ID: ${GIT_COMMIT}"
+        PRNumber=$(curl https://api.github.com/search/issues?q=sha:$GIT_COMMIT | grep number | grep -o '[0-9]*')"
+        echo "PRNumber: ${PRNumber}"
+        git fetch origin pull/$(PRNumber)/head:prBranch
+        git checkout prBranch
+      displayName: 'Fetching changes relevant to the PR'
+
+    # - task: Maven@3
+    #   inputs:
+    #     mavenPomFile: 'pom.xml'
+    #     goals: 'clean install'
+    #     options: '-Dmaven.test.skip=true'
+    #     mavenOptions: '-Xmx3072m'
+    #     javaHomeOption: 'JDKVersion'
+    #     jdkVersionOption: '1.8'
+    #     jdkArchitectureOption: 'x64'
+        
+    # - script: |
+    #     echo '##vso[task.setvariable variable=carbonAPIMGTSnapshotVersion]$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)'
+    #     snapshotVersion=mvn help:evaluate -Dexpression=project.version -q -DforceStdout
+    #     mvn help:evaluate -Dexpression=project.version -q -DforceStdout
+    #   displayName: 'Obtaining Carbon-APIMGT snapshot version'
+    
+    # - script: |
+    #     echo $(carbonAPIMGTSnapshotVersion)
+    #     echo "carbonAPIMGTSnapshotVersion: $(carbonAPIMGTSnapshotVersion)"
+    #   displayName: 'Continues to build Chreo-Product-APIM'
+
+
+    
+
+      
+
