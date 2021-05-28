@@ -31,18 +31,13 @@ stages:
         script: |
           Write-Host ${{ parameters.github_hook.action }}
           Write-Host ${{ parameters.github_hook.number }}
-    
-    - task: CmdLine@2
-      inputs:
-        script: |
-          echo $(parameters.github_hook.number)
-          echo "Pull Request ID : $(parameters.github_hook.number)"
     - task: Bash@3
       inputs:
         targetType: 'inline'
         script: |
           echo $(parameters.github_hook.number)
           echo "Pull Request ID : $(parameters.github_hook.number)"
+      displayName: Getting PR ID
 
 
 
