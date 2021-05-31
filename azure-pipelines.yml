@@ -17,8 +17,8 @@ resources:
 
   - repository: choreo-product-apim
     type: github
-    name: wso2-enterprise/choreo-product-apim
-    source: wso2-enterprise/choreo-product-apim
+    name: slahirucd7/choreo-copy
+    source: slahirucd7/choreo-copy
     endpoint: slahirucd7
 
 stages:
