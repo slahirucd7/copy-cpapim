@@ -50,6 +50,7 @@ stages:
           echo "Pull Request ID : $(PRNumber)"
           git fetch origin pull/$(PRNumber)/head:prBranch
           git checkout prBranch
+          mvn --version
       displayName: 'Fetching changes relevant to the PR'
 
     # - task: Maven@3
