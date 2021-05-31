@@ -13,6 +13,12 @@ resources:
     type: github
     name: slahirucd7/carbon-apimgt
     source: slahirucd7/carbon-apimgt
+    endpoint: slahirucd7 
+
+  - repository: choreo-product-apim
+    type: github
+    name: slahirucd7/choreo-product-apim
+    source: slahirucd7/choreo-product-apim
     endpoint: slahirucd7
 
 stages:
@@ -25,24 +31,51 @@ stages:
       vmImage: ubuntu-latest
     steps:
 
-    - task: Bash@3
-      inputs:
-        targetType: 'inline'
-        script: |
-          echo "Pull Request ID : ${{parameters.github_hook.number}}"
-          echo '##vso[task.setvariable variable=PRNumber]${{parameters.github_hook.number}}'
-      displayName: Getting PR ID
+    # - task: Bash@3
+    #   inputs:
+    #     targetType: 'inline'
+    #     script: |
+    #       echo "Pull Request ID : ${{parameters.github_hook.number}}"
+    #       echo '##vso[task.setvariable variable=PRNumber]${{parameters.github_hook.number}}'
+    #   displayName: Getting PR ID
     
-    - checkout: carbon-apimgt
+    # - checkout: carbon-apimgt
 
-    - task: Bash@3
-      inputs:
-        targetType: 'inline'
-        script: |
-          echo "Pull Request ID : $(PRNumber)"
-          git fetch origin pull/$(PRNumber)/head:prBranch
-          git checkout prBranch
-      displayName: 'Fetching changes relevant to the PR'
+    # - task: Bash@3
+    #   inputs:
+    #     targetType: 'inline'
+    #     script: |
+    #       echo "Pull Request ID : $(PRNumber)"
+    #       git fetch origin pull/$(PRNumber)/head:prBranch
+    #       git checkout prBranch
+    #   displayName: 'Fetching changes relevant to the PR'
+
+    # - task: Maven@3
+    #   inputs:
+    #     mavenPomFile: 'pom.xml'
+    #     goals: 'clean install'
+    #     options: '-Dmaven.test.skip=true'
+    #     mavenOptions: '-Xmx3072m'
+    #     javaHomeOption: 'JDKVersion'
+    #     jdkVersionOption: '1.8'
+    #     jdkArchitectureOption: 'x64'
+
+    # - script: |
+    #     echo '##vso[task.setvariable variable=carbonAPIMGTSnapshotVersion]$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)'
+    #     snapshotVersion=mvn help:evaluate -Dexpression=project.version -q -DforceStdout
+    #     mvn help:evaluate -Dexpression=project.version -q -DforceStdout
+    #   displayName: 'Obtaining Carbon-APIMGT snapshot version'
+    
+    # - script: |
+    #     echo $(carbonAPIMGTSnapshotVersion)
+    #     echo "carbonAPIMGTSnapshotVersion: $(carbonAPIMGTSnapshotVersion)"
+    #   displayName: 'Continues to build Chreo-Product-APIM'
+    
+    - checkout: choreo-product-apim
+
+    - script: |
+        ls
+      displayName: 'Continues to build Chreo-Product-APIM'
 
     - task: Maven@3
       inputs:
@@ -53,19 +86,6 @@ stages:
         javaHomeOption: 'JDKVersion'
         jdkVersionOption: '1.8'
         jdkArchitectureOption: 'x64'
-
-    - script: |
-        echo '##vso[task.setvariable variable=carbonAPIMGTSnapshotVersion]$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)'
-        snapshotVersion=mvn help:evaluate -Dexpression=project.version -q -DforceStdout
-        mvn help:evaluate -Dexpression=project.version -q -DforceStdout
-      displayName: 'Obtaining Carbon-APIMGT snapshot version'
-    
-    - script: |
-        echo $(carbonAPIMGTSnapshotVersion)
-        echo "carbonAPIMGTSnapshotVersion: $(carbonAPIMGTSnapshotVersion)"
-      displayName: 'Continues to build Chreo-Product-APIM'
-
-
 
 
 
