@@ -24,7 +24,7 @@ resources:
   #   endpoint: slahirucd7
 
 stages:
-- stage: Artifact Building
+- stage: ArtifactBuilding
   displayName: PR fetching building artifacts
   jobs:
   - job: 'GettingTriggeredPRDetails'
